@@ -80,7 +80,7 @@ export default  (squares,rowNum) =>{
     //判定処理
     for (let i = 0; i < winConditions.length; i++) {
         // 勝利条件のマスにいるプレイヤー
-        const targetIndexPlayers = squares.filter((_, k) => winConditions[i].includes(k))
+        const targetIndexPlayers = winConditions[i].map((index) => (squares[index]))
         // null(未選択) の場合はチェック不要
         if (targetIndexPlayers[0] !== null) {
             if (targetIndexPlayers.every(x => x === targetIndexPlayers[0])) {
