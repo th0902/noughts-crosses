@@ -4,12 +4,12 @@ import RowInput from './components/RowInput';
 
 class App extends React.Component{
     state ={
-        row_num: null
+        rowNum: null
     }
 
-    onRowSubmit = (row_num) =>{
+    onRowSubmit = (inputValue) =>{
         this.setState({
-            row_num: row_num
+            rowNum: Number(inputValue)
         })
     }
 
@@ -17,7 +17,7 @@ class App extends React.Component{
         return(
             <div>
                 <RowInput onSubmit={this.onRowSubmit} />
-                <Game row_num={this.state.row_num} />
+                <Game rowNum={this.state.rowNum} />
             </div>
         );
     }

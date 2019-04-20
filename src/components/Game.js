@@ -8,7 +8,8 @@ class Game extends React.Component {
         this.state = {
         history: [
             {
-            squares: Array(9).fill(null)
+                // TODO : 本当はここも動的に計算すべき
+                squares: Array(9).fill(null)
             }
         ],
         stepNumber: 0,
@@ -20,7 +21,7 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        if (CalcWinner(squares,this.props.row_num) || squares[i]) {
+        if (CalcWinner(squares,this.props.rowNum) || squares[i]) {
         return;
         }
         squares[i] = this.state.xIsNext ? "X" : "O";
@@ -43,12 +44,10 @@ class Game extends React.Component {
     }
 
     render() {
-        console.log(this.props.row_num)
-
+        const {rowNum} = this.props
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = CalcWinner(current.squares,this.props.row_num);
-
+        const winner = CalcWinner(current.squares,rowNum);
         const moves = history.map((step, move) => {
         const desc = move ?
             'Go to move #' + move :
@@ -66,14 +65,14 @@ class Game extends React.Component {
         } else {
             status = "Next player: " + (this.state.xIsNext ? "X" : "O");
         }
-        if(Number(this.props.row_num)){
+        if(!isNaN(rowNum)){
             return (
                 <div className="game">
                     <div className="game-board">
                     <Board
                         squares={current.squares}
                         onClick={i => this.handleClick(i)}
-                        row_num={this.props.row_num}
+                        rowNum={rowNum}
                     />
                     </div>
                     <div className="game-info">

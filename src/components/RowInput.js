@@ -3,18 +3,18 @@ import React from 'react';
 class RowInput extends React.Component{
 
     state ={
-        row_num: null
+        rowNum: null
     };
 
     onInputChange = (e) =>{
         this.setState({
-            row_num: e.target.value
+            rowNum: e.target.value
         });
     }
 
     onFormSubmit = (e) =>{
         e.preventDefault();
-        this.props.onSubmit(this.state.row_num);
+        this.props.onSubmit(this.state.rowNum);
     }
 
     render(){
