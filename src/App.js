@@ -1,13 +1,23 @@
 import React from 'react';
 import Game from './components/Game';
-import Nmoku from './components/Nmoku';
+import RowInput from './components/RowInput';
 
 class App extends React.Component{
+    state ={
+        row_num: null
+    }
+
+    onRowSubmit = (row_num) =>{
+        this.setState({
+            row_num: row_num
+        })
+    }
+
     render(){
         return(
             <div>
-                <Nmoku />
-                <Game />
+                <RowInput onSubmit={this.onRowSubmit} />
+                <Game row_num={this.state.row_num} />
             </div>
         );
     }
