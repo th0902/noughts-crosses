@@ -4,20 +4,29 @@ import RowInput from './components/RowInput';
 
 class App extends React.Component{
     state ={
-        row_num: null
+        rowNum: null,
+        inputNaN: false
     }
 
-    onRowSubmit = (row_num) =>{
+    onRowSubmit = (inputValue) =>{
+      if (isNaN(Number(inputValue))) {
         this.setState({
-            row_num: row_num
+          inputNaN: true
         })
+      } else {
+        this.setState({
+          rowNum: Number(inputValue),
+          inputNaN: false
+        });
+      }
     }
 
     render(){
         return(
             <div>
                 <RowInput onSubmit={this.onRowSubmit} />
-                <Game row_num={this.state.row_num} />
+                {this.state.inputNaN && <p>数字じゃないよ</p>}
+                <Game rowNum={this.state.rowNum} />
             </div>
         );
     }
