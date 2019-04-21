@@ -5,13 +5,16 @@ import RowInput from './components/RowInput';
 class App extends React.Component {
   state = {
     rowNum: null,
-    winConditionList: []
+    perNum: null,
+    winConditionList: [],
+    personList: []
   };
 
-  onRowSubmit = (inputValue, winConditionList) => {
+  onRowSubmit = (inputRow, winConditionList, personList) => {
     this.setState({
-      rowNum: inputValue,
-      winConditionList: winConditionList
+      rowNum: inputRow,
+      winConditionList: winConditionList,
+      personList: personList
     });
   };
 
@@ -22,6 +25,7 @@ class App extends React.Component {
         <Game
           rowNum={this.state.rowNum}
           winConditionList={this.state.winConditionList}
+          personList={this.state.personList}
         />
       </div>
     );

@@ -1,10 +1,3 @@
-// rowNumに合わせて、以下の配列をつくる
-// [
-//    [ 0, 1, 2 ],
-//    [ 3, 4, 5 ],
-//    ...
-// ]
-
 export default (squares, winConditionList) => {
   //判定処理
   for (let i = 0; i < winConditionList.length; i++) {

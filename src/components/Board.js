@@ -11,13 +11,13 @@ class Board extends React.Component {
         let i = col + row * rowNum;
         board_row.push(this.renderSquare(i));
       }
-      board.push(
-        <div className='board-row' key={row}>
-          {board_row}
-        </div>
-      );
+      board.push(<tr key={row}>{board_row}</tr>);
     }
-    return <div>{board}</div>;
+    return (
+      <table className='ui celled table'>
+        <tbody>{board}</tbody>
+      </table>
+    );
   }
 
   renderSquare(i) {

@@ -12,7 +12,7 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      nextPerson: 0
     };
   }
 
@@ -23,7 +23,7 @@ class Game extends React.Component {
     if (CalcWinner(squares, this.props.winConditionList) || squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    squares[i] = this.props.personList[this.state.nextPerson];
     this.setState({
       history: history.concat([
         {
@@ -31,14 +31,14 @@ class Game extends React.Component {
         }
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      nextPerson: history.length % this.props.personList.length
     });
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: step % 2 === 0
+      nextPerson: step % this.props.personList.length
     });
   }
 
@@ -63,7 +63,7 @@ class Game extends React.Component {
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      status = 'Next player: ' + this.props.personList[this.state.nextPerson];
     }
     return (
       <div className='game'>

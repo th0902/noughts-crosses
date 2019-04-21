@@ -1,3 +1,9 @@
+// rowNumに合わせて、以下の配列をつくる
+// [
+//    [ 0, 1, 2 ],
+//    [ 3, 4, 5 ],
+//    ...
+// ]
 const createBoardSlice = rowNum => {
   return [...Array(rowNum).keys()].map(key => {
     const innerArray = [];
