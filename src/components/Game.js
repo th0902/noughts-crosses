@@ -8,8 +8,7 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          // TODO : 本当はここも動的に計算すべき
-          squares: Array(9).fill(null)
+          squares: []
         }
       ],
       stepNumber: 0,
@@ -21,7 +20,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (CalcWinner(squares, this.props.rowNum) || squares[i]) {
+    if (CalcWinner(squares, this.props.winConditionList) || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -44,13 +43,13 @@ class Game extends React.Component {
   }
 
   render() {
-    const { rowNum } = this.props;
+    const { rowNum, winConditionList } = this.props;
     if (!rowNum) {
       return <div>数字を入力してください</div>;
     }
     const { history } = this.state;
     const current = history[this.state.stepNumber];
-    const winner = CalcWinner(current.squares, rowNum);
+    const winner = CalcWinner(current.squares, winConditionList);
     const moves = history.map((step, move) => {
       const desc = move ? 'Go to move #' + move : 'Go to game start';
       return (
