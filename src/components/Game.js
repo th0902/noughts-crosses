@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from './Board';
 import CalcWinner from './CalcWinner';
+import createWinConditionList from './CreateWinConditionList';
 
 class Game extends React.Component {
   constructor(props) {
@@ -11,19 +12,23 @@ class Game extends React.Component {
           squares: []
         }
       ],
+      winConditionList: [],
       stepNumber: 0,
       nextPerson: 0
     };
   }
 
-  handleClick(i) {
+  handleClick(selcted) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (CalcWinner(squares, this.props.winConditionList) || squares[i]) {
+
+    //既に選択されている場合、誰かが勝利している場合はreturn
+    if (CalcWinner(squares, this.state.winConditionList) || squares[selcted]) {
       return;
     }
-    squares[i] = this.props.personList[this.state.nextPerson];
+
+    squares[selcted] = this.props.personList[this.state.nextPerson];
     this.setState({
       history: history.concat([
         {
@@ -31,7 +36,13 @@ class Game extends React.Component {
         }
       ]),
       stepNumber: history.length,
-      nextPerson: history.length % this.props.personList.length
+      nextPerson: history.length % this.props.personList.length,
+      //勝ちパターンの作成
+      winConditionList: createWinConditionList(
+        this.props.board,
+        selcted,
+        this.props.winNum
+      )
     });
   }
 
@@ -43,13 +54,13 @@ class Game extends React.Component {
   }
 
   render() {
-    const { rowNum, winConditionList } = this.props;
+    const rowNum = this.props.rowNum;
     if (!rowNum) {
       return <div>数字を入力してください</div>;
     }
     const { history } = this.state;
     const current = history[this.state.stepNumber];
-    const winner = CalcWinner(current.squares, winConditionList);
+    const winner = CalcWinner(current.squares, this.state.winConditionList);
     const moves = history.map((step, move) => {
       const desc = move ? 'Go to move #' + move : 'Go to game start';
       return (
@@ -70,7 +81,7 @@ class Game extends React.Component {
         <div className='game-board'>
           <Board
             squares={current.squares}
-            onClick={i => this.handleClick(i)}
+            onClick={selcted => this.handleClick(selcted)}
             rowNum={rowNum}
           />
         </div>

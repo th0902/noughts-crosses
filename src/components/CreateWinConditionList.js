@@ -1,45 +1,54 @@
-// rowNumに合わせて、以下の配列をつくる
-// [
-//    [ 0, 1, 2 ],
-//    [ 3, 4, 5 ],
-//    ...
-// ]
-const createBoardSlice = rowNum => {
-  return [...Array(rowNum).keys()].map(key => {
-    const innerArray = [];
-    const startNum = key * rowNum;
-    for (let i = 0; i < rowNum; i++) {
-      innerArray.push(startNum + i);
-    }
-    return innerArray;
+//勝ちパターンの配列を作成
+export default (boardSlice, selected, winNum) => {
+  //マス目の大きさを取得
+  const rowNum = boardSlice.length;
+
+  //選択されたマスの位置を取得
+  const y = boardSlice.findIndex(function(element) {
+    return element.indexOf(selected) >= 0;
   });
-};
+  const x = boardSlice[y].indexOf(selected);
 
-const createWinConditionList = rowNum => {
-  const boards = createBoardSlice(rowNum);
-  // 横の勝ちパターンはboardsと同じなのでコピーして配列を作る
-  const winConditions = [...boards];
+  let rowArray = [];
+  let colArray = [];
+  let downerSlashArray = [];
+  let upperSlashArray = [];
+  const winConditionList = [];
 
-  // 縦の勝ちパターンはboardsの縦列を読み取る
-  for (let i = 0; i < rowNum; i++) {
-    winConditions.push(boards.map(targetRow => targetRow[i]));
-  }
+  for (let i = 0; i < winNum; i++) {
+    rowArray = [];
+    colArray = [];
+    downerSlashArray = [];
+    upperSlashArray = [];
+    for (let j = 0; j < winNum; j++) {
+      //(選択したマス)-(連続してとったら勝ちなマス)-1)の位置からスタート
+      let n = i + j - (winNum - 1);
 
-  // 斜めパターンは
-  // 右下下がり boards[0][0], boards[1][1], ...
-  // 右上上がり boards[0][LastIndex], boards[1][LastIndex - 1] ...
-  {
-    const downerSlash = []; // 右下下がりの対角線
-    const upperSlash = []; // 右上上がりの対角線
-    for (let i = 0; i < rowNum; i++) {
-      downerSlash.push(boards[i][i]);
-      upperSlash.push(boards[i][rowNum - (i + 1)]);
+      //0以上、マス目未満の場合のみ取得
+      //縦のパターンはy軸に+1ずつ移動
+      if (y + n >= 0 && y + n < rowNum) {
+        rowArray.push(boardSlice[y + n][x]);
+      }
+      //横のパターンはx軸に+1ずつ移動
+      if (x + n >= 0 && x + n < rowNum) {
+        colArray.push(boardSlice[y][x + n]);
+      }
+      //右下がりのパターンはx軸に+1,y軸に+1ずつ移動
+      if (y + n >= 0 && y + n < rowNum && x + n >= 0 && x + n < rowNum) {
+        downerSlashArray.push(boardSlice[y + n][x + n]);
+      }
+      //右上がりのパターンはx軸に+1,y軸に-1ずつ移動
+      if (y - n >= 0 && y - n < rowNum && x + n >= 0 && x + n < rowNum) {
+        upperSlashArray.push(boardSlice[y - n][x + n]);
+      }
     }
-    winConditions.push(downerSlash);
-    winConditions.push(upperSlash);
+    //連続してとったら勝ちなマス以上のパターンのみプッシュ
+    if (rowArray.length === winNum) winConditionList.push(rowArray);
+    if (colArray.length === winNum) winConditionList.push(colArray);
+    if (downerSlashArray.length === winNum)
+      winConditionList.push(downerSlashArray);
+    if (upperSlashArray.length === winNum)
+      winConditionList.push(upperSlashArray);
   }
-  console.log(winConditions);
-  return winConditions;
+  return winConditionList;
 };
-
-export default createWinConditionList;

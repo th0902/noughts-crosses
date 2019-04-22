@@ -6,15 +6,17 @@ class App extends React.Component {
   state = {
     rowNum: null,
     perNum: null,
-    winConditionList: [],
+    winNum: null,
+    board: [],
     personList: []
   };
 
-  onRowSubmit = (inputRow, winConditionList, personList) => {
+  onRowSubmit = (inputRow, board, personList, winNum) => {
     this.setState({
       rowNum: inputRow,
-      winConditionList: winConditionList,
-      personList: personList
+      board: board,
+      personList: personList,
+      winNum: winNum
     });
   };
 
@@ -24,8 +26,9 @@ class App extends React.Component {
         <RowInput onSubmit={this.onRowSubmit} />
         <Game
           rowNum={this.state.rowNum}
-          winConditionList={this.state.winConditionList}
+          board={this.state.board}
           personList={this.state.personList}
+          winNum={this.state.winNum}
         />
       </div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Square = props => {
+export default props => {
   return (
     <td>
       <button className='square' onClick={props.onClick} key={props.value}>
@@ -9,5 +9,3 @@ const Square = props => {
     </td>
   );
 };
-
-export default Square;
